@@ -167,5 +167,6 @@ ES.addEventListener('patch',e=>{const d=JSON.parse(e.data);if(d.path=='/')Object
 ES.onerror=()=>{if(!box.children.length)box.textContent='Connexion au classement…'}}
 nav();S.pseudo?home():welcome();sv();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-let IP;addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;const b=document.createElement('button');b.className='tb';b.textContent='📲 Installer';b.onclick=()=>IP.prompt();document.getElementById('nav').parentNode.insertBefore(b,document.getElementById('vo'))});
+let IP;addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;if(document.getElementById('inst'))return;const b=document.createElement('button');b.id='inst';b.className='tb';b.textContent='📲 Installer';b.onclick=()=>IP.prompt();document.getElementById('nav').parentNode.insertBefore(b,document.getElementById('vo'))});
+addEventListener('appinstalled',()=>{const b=document.getElementById('inst');b&&b.remove()});
 </script></body></html>
