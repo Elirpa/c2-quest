@@ -166,6 +166,15 @@ ES.addEventListener('put',e=>{const d=JSON.parse(e.data);if(d.path=='/')M=d.data
 ES.addEventListener('patch',e=>{const d=JSON.parse(e.data);if(d.path=='/')Object.assign(M,d.data||{});else{const k=d.path.split('/')[1];M[k]=Object.assign(M[k]||{},d.data)}render()});
 ES.onerror=()=>{if(!box.children.length)box.textContent='Connexion au classement…'}}
 nav();S.pseudo?home():welcome();sv();
+
+async function delAcc(){if(!confirm('Supprimer définitivement ton compte ? Ta progression et ta place au classement seront effacées.'))return;
+clearTimeout(PT);push=()=>{};
+try{if(FB&&S.uid){await Promise.all([fetch(FB+'/lb/'+S.uid+'.json',{method:'DELETE'}),fetch(FB+'/saves/'+S.uid+'.json',{method:'DELETE'})])}}catch(e){}
+try{localStorage.clear()}catch(e){}
+try{if('caches'in window){const k=await caches.keys();await Promise.all(k.map(x=>caches.delete(x)))}}catch(e){}
+location.reload()}
+const _home=home;home=function(){_home.apply(this,arguments);if(S.pseudo)A.insertAdjacentHTML('beforeend',"<div class='card'><button class='btn g' id='dacc' style='color:#e66'>🗑️ Supprimer mon compte</button></div>");const d=document.getElementById('dacc');if(d)d.onclick=delAcc};
+if(S.pseudo)home();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 let IP;addEventListener('beforeinstallprompt',e=>{e.preventDefault();IP=e;if(document.getElementById('inst'))return;const b=document.createElement('button');b.id='inst';b.className='tb';b.textContent='📲 Installer';b.onclick=()=>IP.prompt();document.getElementById('nav').parentNode.insertBefore(b,document.getElementById('vo'))});
 addEventListener('appinstalled',()=>{const b=document.getElementById('inst');b&&b.remove()});
